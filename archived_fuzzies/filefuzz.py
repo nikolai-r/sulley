@@ -30,7 +30,7 @@ target.procmon_options = {
     'file_path' : 'c:\\work\\audit\\files\\', #where to store the testcase files
     #'finish_bp' : 0x01004a0d, #you may set this to 0 if you wish to rely on max_lifetime/process termination
     'finish_bp' : 0,
-    'max_lifetime' : 10.0, #ttl
+    'max_lifetime' : 3.0, #ttl
     'show_window' : False,
 }
 
