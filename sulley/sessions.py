@@ -925,7 +925,30 @@ class session (pgraph.graph):
             self.protmon_results[self.total_mutant_index] = data ;
             #print self.protmon_results
 
+class file_session(session):
+    def transmit(self, sock, node, edge, target):
+        data = None
+        # if the edge has a callback, process it. the callback has the option to render the node, modify it and return.
+        if edge.callback:
+            data = edge.callback(self, node, edge, sock)
 
+        self.logger.error("xmitting: [%d.%d]" % (node.id, self.total_mutant_index))
+
+        # if no data was returned by the callback, render the node here.
+        if not data:
+            data = node.render()
+
+        #send file data over rpc to procmon
+        target.procmon.on_send(self.total_mutant_index, data)
+        del data
+
+    def restart_target(self, target, stop_first=True):
+        pass
+
+    def fuzz(self, this_node=None, path=[]):
+        #tcp is default so we disable connecting since we are going to send data over rpc to procmon
+        self.connect_befor_send=False
+        super(file_session, self).fuzz(this_node, path)
 
 ########################################################################################################################
 class web_interface_handler (BaseHTTPServer.BaseHTTPRequestHandler):

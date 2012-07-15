@@ -504,4 +504,3 @@ if __name__ == "__main__":
         servlet.serve_forever()
     except:
         print "Error starting RPC server!"
-        pass
